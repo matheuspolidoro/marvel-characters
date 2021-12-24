@@ -5,12 +5,30 @@
   "projects": {
     "marvel-heroes": {
       "projectType": "application",
-      "schematics": {
+            "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true
         },
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+         },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true 
         }
       },
       "root": "",
@@ -18,8 +36,10 @@
       "prefix": "app",
       "architect": {
         "build": {
+          
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "poll": 2000,
             "outputPath": "dist/marvel-heroes",
             "index": "src/index.html",
             "main": "src/main.ts",
