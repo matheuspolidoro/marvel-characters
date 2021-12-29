@@ -1,0 +1,29 @@
+$small: 449px;
+
+:host {
+  display: grid;
+  grid-template-columns: 48px 1fr 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 0px 5px #00000033;
+  border-radius: 4px;
+  opacity: 1;
+  padding: 20px 24px;
+  text-align: start;
+  box-sizing: border-box;
+  align-items: center;
+  cursor: pointer;
+  @media screen and (max-width: $small) {
+    padding: 12px 16px;
+    grid-template-columns: 48px 1fr;
+    p {
+      display: none;
+    }
+  }
+}
+
+img {
+  width: 48px;
+  height: 48px;
+}
