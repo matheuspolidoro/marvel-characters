@@ -9,9 +9,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HeroDetailComponent } from './pages/hero-detail/hero-detail.component';
 import { HeroListComponent } from './pages/hero-list/hero-list.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, HeroDetailComponent, HeroListComponent],
+  declarations: [AppComponent, HeroDetailComponent, HeroListComponent, PageNotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

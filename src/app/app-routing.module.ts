@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HeroDetailComponent } from './pages/hero-detail/hero-detail.component';
@@ -21,6 +22,10 @@ const routes: Routes = [
     component: HeroDetailComponent,
     pathMatch: 'full',
     data: { animation: 'detail' },
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
   },
 ];
 
