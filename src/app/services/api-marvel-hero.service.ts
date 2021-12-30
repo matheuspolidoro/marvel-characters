@@ -1,5 +1,19 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export interface IHeaderParams {
+  name?: string;
+  nameStartsWith?: string;
+  modifiedSince?: string;
+  comics?: number;
+  series?: number;
+  events?: number;
+  stories?: number;
+  orderBy?: string;
+  limit?: number;
+  offset?: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -7,10 +21,32 @@ import { Injectable } from '@angular/core';
 export class ApiMarvelHeroService {
   constructor(private http: HttpClient) {}
 
-  PUBLIC_KEY = '2f0e2b310aa04fc38db5a244787671a6';
-  TIME_STAMP = '1626905702';
-  HASH = '4ea7f3a87a87891d7e47375c5b4fe3ad';
+  charactersSubject = new BehaviorSubject(null);
+
   URL_API = `https://gateway.marvel.com`;
+  TIME_STAMP = '1';
+  PUBLIC_KEY = '1b14d482862c0f1655dcd6dafd818949';
+  HASH = '208c5341777661730bb014a638d0726b';
 
   AUTH = `ts=${this.TIME_STAMP}&apikey=${this.PUBLIC_KEY}&hash=${this.HASH}`;
+
+  getCharacters(parameters: IHeaderParams) {
+    let params = new HttpParams({ fromObject: { ...parameters } });
+    this.http
+      .get<any>(`${this.URL_API}/v1/public/characters?${this.AUTH}`, {
+        params: params,
+      })
+      .subscribe(
+        (res) => {
+          this.charactersSubject.next(res);
+        },
+        (error) => console.error('Erro na requisição: ', error)
+      );
+  }
+
+  getCharacterDetail(characterId: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.URL_API}/v1/public/characters/${characterId}?${this.AUTH}`
+    );
+  }
 }
