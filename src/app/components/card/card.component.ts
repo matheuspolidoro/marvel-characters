@@ -1,4 +1,9 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+} from '@angular/core';
 
 @Component({
   selector: 'app-card',
@@ -7,14 +12,23 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent implements OnInit {
+  @Input('hero') hero: any;
+
   constructor() {}
 
-  imageSource = null;
-  imageAlt = null;
+  charName: string = '';
+  imageSource: string = '';
+  imageAlt: string = '';
+
   imageNotFound = 'assets/Error_perspective_matte.png';
 
-  charName = 'Astolfo';
   seriesList = 'Série do Astolfo';
   eventsList = 'Evento Supimpa';
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+    this.imageAlt = this.hero.name;
+    this.imageSource =
+      this.hero.thumbnail.path + '.' + this.hero.thumbnail.extension;
+    this.charName = this.hero.name;
+  }
 }

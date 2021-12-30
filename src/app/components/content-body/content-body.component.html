@@ -2,10 +2,12 @@
   <h1>Busca de personagens</h1>
   <h4>Nome do personagem</h4>
   <div class="search-wrapper">
-    <input placeholder="Search" />
+    <input type="text" placeholder="Search" (keyup)="typeSearch($event)" />
   </div>
 </header>
 
 <section>
-  <app-card [routerLink]="['/detail']"></app-card>
+  <ng-container *ngFor="let hero of (heroes$ | async)?.data?.results">
+    <app-card [hero]="hero" [routerLink]="['/detail']"></app-card>
+  </ng-container>
 </section>
