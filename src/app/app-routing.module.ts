@@ -4,10 +4,22 @@ import { HeroDetailComponent } from './pages/hero-detail/hero-detail.component';
 import { HeroListComponent } from './pages/hero-list/hero-list.component';
 
 const routes: Routes = [
-  { path: '', component: HeroListComponent, data: { animation: 'list' } },
   {
-    path: 'detail',
+    path: '',
+    component: HeroListComponent,
+    pathMatch: 'full',
+    data: { animation: 'list' },
+  },
+  {
+    path: 'page/:pageNumber',
+    component: HeroListComponent,
+    data: { animation: 'list' },
+    pathMatch: 'full',
+  },
+  {
+    path: 'detail/:heroId',
     component: HeroDetailComponent,
+    pathMatch: 'full',
     data: { animation: 'detail' },
   },
 ];
