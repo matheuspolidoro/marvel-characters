@@ -39,6 +39,7 @@ export class ContentBodyComponent implements OnInit {
   searchCharacter(text: any) {
     console.log('searchCharacter text: ', text);
     if (text !== '') this.apiMarvelHero.getCharacters({ nameStartsWith: text });
+    else this.apiMarvelHero.getCharacters({ limit: 10, offset: 0 });
   }
 
   typeSearch(text: any) {

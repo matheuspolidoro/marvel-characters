@@ -8,6 +8,6 @@
 
 <section>
   <ng-container *ngFor="let hero of (heroes$ | async)?.data?.results">
-    <app-card [hero]="hero" [routerLink]="['/detail']"></app-card>
+    <app-card [hero]="hero" [routerLink]="['/detail', hero.id]"></app-card>
   </ng-container>
 </section>
