@@ -1,10 +1,31 @@
 :host {
   background-color: #fff;
   display: flex;
-  position: fixed;
+  position: sticky;
   align-items: center;
   justify-content: center;
   bottom: 0;
   width: 100%;
-  border-top: 7px solid #e5e5e5;
+  // border-top: 1px solid #c2c2c2;
+  box-shadow: 0px -3px 16px #00000033;
+
+  min-height: 40px;
+  padding: 1.5rem 0;
+}
+
+.arrowsButton {
+  font-size: 1.5rem;
+  color: #8e8e8e;
+  font-weight: 500;
+  margin: 0 8px;
+  cursor: pointer;
+}
+
+.pageNumber {
+  border: 1px solid #e5e5e5;
+  height: 32px;
+  background-color: #f5f5f5;
+  border-radius: 2px;
+  padding: 0 12px;
+  margin: 0 8px;
 }
