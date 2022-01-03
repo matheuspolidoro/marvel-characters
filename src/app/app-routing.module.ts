@@ -1,25 +1,25 @@
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HeroDetailComponent } from './pages/hero-detail/hero-detail.component';
-import { HeroListComponent } from './pages/hero-list/hero-list.component';
+import { CharacterDetailComponent } from './pages/hero-detail/hero-detail.component';
+import { CharacterListComponent } from './pages/hero-list/hero-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HeroListComponent,
     pathMatch: 'full',
+    redirectTo: 'page/*',
     data: { animation: 'list' },
   },
   {
     path: 'page/:pageNumber',
-    component: HeroListComponent,
+    component: CharacterListComponent,
     data: { animation: 'list' },
     pathMatch: 'full',
   },
   {
     path: 'detail/:heroId',
-    component: HeroDetailComponent,
+    component: CharacterDetailComponent,
     pathMatch: 'full',
     data: { animation: 'detail' },
   },

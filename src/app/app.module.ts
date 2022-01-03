@@ -1,4 +1,4 @@
-import { ApiMarvelHeroService } from './services/api-marvel-hero.service';
+import { ApiMarvelCharacterService } from './services/api-marvel-hero.service';
 import { ComponentsModule } from './components/components.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,12 +7,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { HeroDetailComponent } from './pages/hero-detail/hero-detail.component';
-import { HeroListComponent } from './pages/hero-list/hero-list.component';
+import { CharacterDetailComponent } from './pages/hero-detail/hero-detail.component';
+import { CharacterListComponent } from './pages/hero-list/hero-list.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, HeroDetailComponent, HeroListComponent, PageNotFoundComponent],
+  declarations: [
+    AppComponent,
+    CharacterDetailComponent,
+    CharacterListComponent,
+    PageNotFoundComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -20,7 +25,7 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
     ComponentsModule,
     HttpClientModule,
   ],
-  providers: [ApiMarvelHeroService],
+  providers: [ApiMarvelCharacterService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
