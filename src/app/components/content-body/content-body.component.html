@@ -6,8 +6,13 @@
   </div>
 </header>
 
-<section>
-  <ng-container *ngFor="let hero of (heroes$ | async)?.data?.results">
-    <app-card [hero]="hero" [routerLink]="['/detail', hero.id]"></app-card>
+<section [@listAnimation]="characters">
+  <ng-container *ngIf="!(loadingCharacters | async)">
+    <div *ngFor="let hero of characters">
+      <app-card [hero]="hero" [routerLink]="['/detail', hero.id]"></app-card>
+    </div>
   </ng-container>
+  <ng-container *ngIf="loadingCharacters | async"
+    ><h1>Loading</h1></ng-container
+  >
 </section>

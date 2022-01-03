@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface IHeaderParams {
   name?: string;
@@ -18,10 +18,12 @@ export interface IHeaderParams {
 @Injectable({
   providedIn: 'root',
 })
-export class ApiMarvelHeroService {
+export class ApiMarvelCharacterService {
   constructor(private http: HttpClient) {}
 
-  charactersSubject = new BehaviorSubject(null);
+  apiMarvelSubject = new Subject();
+  activePage: BehaviorSubject<number> = new BehaviorSubject(1);
+  pages: Subject<number> = new Subject();
 
   URL_API = `https://gateway.marvel.com`;
   TIME_STAMP = '1';
@@ -38,7 +40,8 @@ export class ApiMarvelHeroService {
       })
       .subscribe(
         (res) => {
-          this.charactersSubject.next(res);
+          this.apiMarvelSubject.next(res);
+          console.log('%c%s', 'color: #00b300', res.data.total);
         },
         (error) => console.error('Erro na requisição: ', error)
       );

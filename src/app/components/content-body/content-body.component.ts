@@ -1,45 +1,85 @@
-import { ApiMarvelHeroService } from './../../services/api-marvel-hero.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import {
+  ApiMarvelCharacterService,
+  IHeaderParams,
+} from './../../services/api-marvel-hero.service';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
-import { Subscription, Observable } from 'rxjs';
+import { Location } from '@angular/common';
+import { listAnimation } from 'src/app/animations/list.animation';
 
 @Component({
   selector: 'app-content-body',
   templateUrl: './content-body.component.html',
   styleUrls: ['./content-body.component.scss'],
+  animations: [listAnimation],
 })
 export class ContentBodyComponent implements OnInit {
   constructor(
-    private apiMarvelHero: ApiMarvelHeroService,
-    private route: ActivatedRoute
+    private location: Location,
+    private apiMarvelCharacter: ApiMarvelCharacterService
   ) {
-    this.heroes$ = this.apiMarvelHero.charactersSubject;
+    this.activePage$ = apiMarvelCharacter.activePage;
+    this.apiMarvelSubject$ = apiMarvelCharacter.apiMarvelSubject;
   }
 
-  heroes$: Observable<any>;
-  page: number = 0;
-  subscription: Subscription | undefined;
+  private subscription = new Subscription();
+
+  activePage$;
+  apiMarvelSubject$;
+  characters = undefined;
+  loadingCharacters: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
+  cantFindCharacters: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
 
   ngOnInit(): void {
-    this.subscription = this.route.params.subscribe((params) => {
-      this.page = params?.pageNumber ?? 0;
-      if (this.page == 0) {
-        this.apiMarvelHero.getCharacters({ limit: 10, offset: 0 });
-      } else {
-        this.apiMarvelHero.getCharacters({ limit: 10, offset: this.page * 10 });
-      }
-    });
+    this.subscription.add(
+      this.activePage$.subscribe((page) => {
+        let parametersApi: IHeaderParams;
+        parametersApi = {
+          limit: 10,
+          offset: (page - 1) * 10,
+        };
+        this.apiMarvelCharacter.getCharacters(parametersApi);
+      })
+    );
+
+    this.subscription.add(
+      this.apiMarvelSubject$.subscribe((val: any) => {
+        val ? (this.characters = val.data.results) : this.characters;
+        this.loadingCharacters.next(false);
+        console.log(
+          '%c%s loadingCharacters to FALSE',
+          'color: #735656',
+          this.loadingCharacters
+        );
+      })
+    );
   }
 
-  ngOnDestroy(): void {
-    if (this.subscription) this.subscription.unsubscribe();
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   searchCharacter(text: any) {
+    this.loadingCharacters.next(true);
+
     console.log('searchCharacter text: ', text);
-    if (text !== '') this.apiMarvelHero.getCharacters({ nameStartsWith: text });
-    else this.apiMarvelHero.getCharacters({ limit: 10, offset: 0 });
+    console.log(
+      '%c%s loadingCharacters to TRUE',
+      'color: #EEDD56',
+      this.loadingCharacters
+    );
+
+    if (text !== '') {
+      this.apiMarvelCharacter.getCharacters({ nameStartsWith: text });
+      this.location.replaceState('/search');
+    } else {
+      this.apiMarvelCharacter.getCharacters({ limit: 10, offset: 0 });
+      this.location.replaceState('/page/1');
+    }
   }
 
   typeSearch(text: any) {
