@@ -1,1 +1,11 @@
-<p>footer-pagination works!</p>
+<!-- <ng-container *ngFor="let page of [].constructor(pages)">
+  <button>{{ page }}</button>
+</ng-container> -->
+<span class="arrowsButton">«</span>
+<span class="arrowsButton">‹</span>
+<button class="pageNumber">
+  {{ activePage$ | async }}
+  <!-- here {{ pages$ | async }} -->
+</button>
+<span class="arrowsButton">›</span>
+<span class="arrowsButton">»</span>
