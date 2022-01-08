@@ -21,7 +21,7 @@ export interface IHeaderParams {
 export class ApiMarvelCharacterService {
   constructor(private http: HttpClient) {}
 
-  apiMarvelSubject = new Subject();
+  apiMarvelSubject = new Subject<any>();
   activePage: BehaviorSubject<number> = new BehaviorSubject(1);
   pages: Subject<number> = new Subject();
 
@@ -41,7 +41,6 @@ export class ApiMarvelCharacterService {
       .subscribe(
         (res) => {
           this.apiMarvelSubject.next(res);
-          console.log('%c%s', 'color: #00b300', res.data.total);
         },
         (error) => console.error('Erro na requisição: ', error)
       );

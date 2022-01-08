@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiMarvelCharacterService } from 'src/app/services/api-marvel-hero.service';
+import { ApiMarvelCharacterService } from 'src/app/services/api-marvel-character.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-hero-list',
-  templateUrl: './hero-list.component.html',
-  styleUrls: ['./hero-list.component.scss'],
+  selector: 'app-character-list',
+  templateUrl: './character-list.component.html',
+  styleUrls: ['./character-list.component.scss'],
 })
 export class CharacterListComponent implements OnInit {
   constructor(

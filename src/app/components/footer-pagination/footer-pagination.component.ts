@@ -1,11 +1,23 @@
-import { ApiMarvelCharacterService } from './../../services/api-marvel-hero.service';
+import { ApiMarvelCharacterService } from '../../services/api-marvel-character.service';
 import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import {
+  forkJoin,
+  Subject,
+  Subscription,
+  BehaviorSubject,
+  Observable,
+  combineLatest,
+} from 'rxjs';
+
+interface Ia {
+  display: boolean;
+  value: number;
+}
 
 @Component({
   selector: 'app-footer-pagination',
@@ -25,12 +37,36 @@ export class FooterPaginationComponent implements OnInit {
 
   pages$;
   apiMarvel$;
-  activePage$;
+  activePage$: Observable<number>;
+  previousPage$ = new BehaviorSubject<Ia>({ display: false, value: -1 });
+  nextPage$ = new BehaviorSubject<Ia>({ display: false, value: -1 });
   private subscription = new Subscription();
 
   ngOnInit(): void {
-    this.apiMarvel$.subscribe((value: any) => {
-      value ? this.pages$.next(this.numberOfPages(value.data.total)) : 0;
+    /*
+     * ouve observables da api e da página setada
+     * para tratar as páginas que aparecem no footer
+     */
+    this.subscription = combineLatest([
+      this.apiMarvel$,
+      this.activePage$,
+    ]).subscribe(([apiData, activePage]) => {
+      let numOfPages = this.numberOfPages(apiData.data.total);
+      this.pages$.next(numOfPages);
+
+      if (activePage >= 1 && activePage <= numOfPages) {
+        this.previousPage$.next({
+          display: activePage != 1,
+          value: activePage - 1,
+        });
+        this.nextPage$.next({
+          display: activePage != numOfPages,
+          value: activePage - -1,
+        });
+      } else {
+        this.previousPage$.next({ display: false, value: -1 });
+        this.nextPage$.next({ display: false, value: -1 });
+      }
     });
   }
 
@@ -38,6 +74,10 @@ export class FooterPaginationComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  /*
+   * de acordo com numero de personagens
+   * se estabelece número de páginas
+   */
   numberOfPages(totalCharacters: number) {
     let pageTemp;
 

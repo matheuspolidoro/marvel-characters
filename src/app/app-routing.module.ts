@@ -1,8 +1,8 @@
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CharacterDetailComponent } from './pages/hero-detail/hero-detail.component';
-import { CharacterListComponent } from './pages/hero-list/hero-list.component';
+import { CharacterDetailComponent } from './pages/character-detail/character-detail.component';
+import { CharacterListComponent } from './pages/character-list/character-list.component';
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'detail/:heroId',
+    path: 'detail/:characterId',
     component: CharacterDetailComponent,
     pathMatch: 'full',
     data: { animation: 'detail' },

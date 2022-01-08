@@ -1,11 +1,53 @@
 <!-- <ng-container *ngFor="let page of [].constructor(pages)">
   <button>{{ page }}</button>
 </ng-container> -->
-<span class="arrowsButton">«</span>
-<span class="arrowsButton">‹</span>
-<button class="pageNumber">
-  {{ activePage$ | async }}
-  <!-- here {{ pages$ | async }} -->
-</button>
-<span class="arrowsButton">›</span>
-<span class="arrowsButton">»</span>
+
+<ng-container *ngIf="activePage$ | async as activePage">
+  <div *ngIf="previousPage$ | async as previous">
+    <span
+      class="arrowsButton"
+      *ngIf="previous.display"
+      [routerLink]="['../' + 1]"
+      >«</span
+    >
+    <span
+      class="arrowsButton"
+      *ngIf="previous.display"
+      [routerLink]="['../' + previous.value]"
+      >‹</span
+    >
+    <button
+      *ngIf="previous.display"
+      class="pageNumber"
+      [routerLink]="['../' + previous.value]"
+    >
+      {{ previous.value }}
+    </button>
+  </div>
+
+  <button class="activePage">
+    {{ activePage }}
+  </button>
+
+  <div *ngIf="nextPage$ | async as next">
+    <button
+      *ngIf="next.display"
+      class="pageNumber"
+      [routerLink]="['../' + next.value]"
+    >
+      {{ next.value }}
+    </button>
+    <span
+      class="arrowsButton"
+      *ngIf="next.display"
+      [routerLink]="['../' + next.value]"
+      >›</span
+    >
+    <span
+      class="arrowsButton"
+      *ngIf="next.display"
+      [routerLink]="['../' + (pages$ | async)]"
+      >»</span
+    >
+  </div>
+</ng-container>

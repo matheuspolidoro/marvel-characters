@@ -28,4 +28,12 @@
   border-radius: 2px;
   padding: 0 12px;
   margin: 0 8px;
+  cursor: pointer;
+}
+
+.activePage {
+  @extend .pageNumber;
+  background-color: #167abc;
+  border: 1px solid #167abc;
+  color: #ffffff;
 }
