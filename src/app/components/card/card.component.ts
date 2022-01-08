@@ -3,6 +3,7 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  OnChanges,
 } from '@angular/core';
 
 @Component({
@@ -11,8 +12,8 @@ import {
   styleUrls: ['./card.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardComponent implements OnInit {
-  @Input('hero') hero: any;
+export class CardComponent implements OnInit, OnChanges {
+  @Input('character') character: any;
 
   constructor() {}
 
@@ -22,13 +23,25 @@ export class CardComponent implements OnInit {
 
   imageNotFound = 'assets/Error_perspective_matte.png';
 
-  seriesList = 'Série do Astolfo';
-  eventsList = 'Evento Supimpa';
+  seriesList = [] as any;
+  eventsList = [] as any;
 
-  ngOnInit(): void {
-    this.imageAlt = this.hero.name;
+  ngOnChanges(): void {
+    this.imageAlt = this.character.name;
     this.imageSource =
-      this.hero.thumbnail.path + '.' + this.hero.thumbnail.extension;
-    this.charName = this.hero.name;
+      this.character.thumbnail.path + '.' + this.character.thumbnail.extension;
+    this.charName = this.character.name;
+
+    for (let index = 0; index < 3; index++) {
+      this.character.series.items[index]
+        ? this.seriesList.push(this.character.series.items[index])
+        : null;
+
+      this.character.events.items[index]
+        ? this.eventsList.push(this.character.series.items[index])
+        : null;
+    }
   }
+
+  ngOnInit(): void {}
 }

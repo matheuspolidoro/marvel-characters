@@ -6,9 +6,17 @@
 <h4>
   {{ charName }}
 </h4>
-<p>
-  {{ seriesList }}
-</p>
-<p>
-  {{ eventsList }}
-</p>
+<div class="listBriefDetail">
+  <ng-container *ngFor="let series of seriesList">
+    <p>
+      {{ series.name }}
+    </p>
+  </ng-container>
+</div>
+<div class="listBriefDetail">
+  <ng-container *ngFor="let event of eventsList">
+    <p>
+      {{ event.name }}
+    </p>
+  </ng-container>
+</div>

@@ -1,8 +1,9 @@
+import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import {
   ApiMarvelCharacterService,
   IHeaderParams,
-} from './../../services/api-marvel-hero.service';
+} from '../../services/api-marvel-character.service';
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { listAnimation } from 'src/app/animations/list.animation';
@@ -16,7 +17,8 @@ import { listAnimation } from 'src/app/animations/list.animation';
 export class ContentBodyComponent implements OnInit {
   constructor(
     private location: Location,
-    private apiMarvelCharacter: ApiMarvelCharacterService
+    private apiMarvelCharacter: ApiMarvelCharacterService,
+    private router: Router
   ) {
     this.activePage$ = apiMarvelCharacter.activePage;
     this.apiMarvelSubject$ = apiMarvelCharacter.apiMarvelSubject;
@@ -27,16 +29,14 @@ export class ContentBodyComponent implements OnInit {
   activePage$;
   apiMarvelSubject$;
   characters = undefined;
-  loadingCharacters: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
-  );
-  cantFindCharacters: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
-  );
+  loadingCharacters = new BehaviorSubject<boolean>(true);
+  cantFindCharacters = new BehaviorSubject<boolean>(true);
 
   ngOnInit(): void {
     this.subscription.add(
       this.activePage$.subscribe((page) => {
+        this.loadingCharacters.next(true);
+
         let parametersApi: IHeaderParams;
         parametersApi = {
           limit: 10,
@@ -50,11 +50,6 @@ export class ContentBodyComponent implements OnInit {
       this.apiMarvelSubject$.subscribe((val: any) => {
         val ? (this.characters = val.data.results) : this.characters;
         this.loadingCharacters.next(false);
-        console.log(
-          '%c%s loadingCharacters to FALSE',
-          'color: #735656',
-          this.loadingCharacters
-        );
       })
     );
   }
@@ -63,15 +58,14 @@ export class ContentBodyComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+  goToDetail(character: any) {
+    this.router.navigate([`/detail/${character.id}`], {
+      state: { character: character },
+    });
+  }
+
   searchCharacter(text: any) {
     this.loadingCharacters.next(true);
-
-    console.log('searchCharacter text: ', text);
-    console.log(
-      '%c%s loadingCharacters to TRUE',
-      'color: #EEDD56',
-      this.loadingCharacters
-    );
 
     if (text !== '') {
       this.apiMarvelCharacter.getCharacters({ nameStartsWith: text });
@@ -84,8 +78,6 @@ export class ContentBodyComponent implements OnInit {
 
   typeSearch(text: any) {
     // debounce no input de search
-    console.log('text key: ', text.key);
-
     let timer: any;
     clearTimeout(timer);
 

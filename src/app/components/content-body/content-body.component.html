@@ -8,11 +8,12 @@
 
 <section [@listAnimation]="characters">
   <ng-container *ngIf="!(loadingCharacters | async)">
-    <div *ngFor="let hero of characters">
-      <app-card [hero]="hero" [routerLink]="['/detail', hero.id]"></app-card>
+    <div *ngFor="let character of characters">
+      <app-card
+        [character]="character"
+        (click)="goToDetail(character)"
+      ></app-card>
     </div>
   </ng-container>
-  <ng-container *ngIf="loadingCharacters | async"
-    ><h1>Loading</h1></ng-container
-  >
 </section>
+<ng-container *ngIf="loadingCharacters | async"><h1>Loading</h1></ng-container>
