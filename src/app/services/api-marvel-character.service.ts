@@ -22,7 +22,7 @@ export class ApiMarvelCharacterService {
   constructor(private http: HttpClient) {}
 
   apiMarvelSubject = new Subject<any>();
-  activePage: BehaviorSubject<number> = new BehaviorSubject(1);
+  activePage: BehaviorSubject<any> = new BehaviorSubject(1);
   pages: Subject<number> = new Subject();
 
   URL_API = `https://gateway.marvel.com`;

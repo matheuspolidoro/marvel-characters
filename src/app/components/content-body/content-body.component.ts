@@ -35,14 +35,16 @@ export class ContentBodyComponent implements OnInit {
   ngOnInit(): void {
     this.subscription.add(
       this.activePage$.subscribe((page) => {
-        this.loadingCharacters.next(true);
+        if (page) {
+          this.loadingCharacters.next(true);
 
-        let parametersApi: IHeaderParams;
-        parametersApi = {
-          limit: 10,
-          offset: (page - 1) * 10,
-        };
-        this.apiMarvelCharacter.getCharacters(parametersApi);
+          let parametersApi: IHeaderParams;
+          parametersApi = {
+            limit: 10,
+            offset: (page - 1) * 10,
+          };
+          this.apiMarvelCharacter.getCharacters(parametersApi);
+        }
       })
     );
 
@@ -50,6 +52,7 @@ export class ContentBodyComponent implements OnInit {
       this.apiMarvelSubject$.subscribe((val: any) => {
         val ? (this.characters = val.data.results) : this.characters;
         this.loadingCharacters.next(false);
+        console.log('val: ', val);
       })
     );
   }
@@ -65,22 +68,29 @@ export class ContentBodyComponent implements OnInit {
   }
 
   searchCharacter(text: any) {
-    this.loadingCharacters.next(true);
-
-    if (text !== '') {
-      this.apiMarvelCharacter.getCharacters({ nameStartsWith: text });
-      this.location.replaceState('/search');
-    } else {
-      this.apiMarvelCharacter.getCharacters({ limit: 10, offset: 0 });
-      this.location.replaceState('/page/1');
-    }
+    console.log('entrou search com text: ', text);
+    this.loadingCharacters
+      .subscribe((value) => {
+        if (!value) {
+          this.loadingCharacters.next(true);
+          if (text !== '') {
+            this.activePage$.next(false);
+            this.apiMarvelCharacter.getCharacters({ nameStartsWith: text });
+            this.location.replaceState(`/page/search?=${text}`);
+          } else {
+            this.activePage$.next(1);
+            this.apiMarvelCharacter.getCharacters({ limit: 10, offset: 0 });
+            this.location.replaceState('/page/1');
+          }
+        }
+      })
+      .unsubscribe();
   }
 
   typeSearch(text: any) {
     // debounce no input de search
-    let timer: any;
+    let timer;
     clearTimeout(timer);
-
     timer = setTimeout(() => {
       this.searchCharacter(text.target.value);
     }, 500);
