@@ -52,7 +52,6 @@ export class ContentBodyComponent implements OnInit {
       this.apiMarvelSubject$.subscribe((val: any) => {
         val ? (this.characters = val.data.results) : this.characters;
         this.loadingCharacters.next(false);
-        console.log('val: ', val);
       })
     );
   }
@@ -68,7 +67,6 @@ export class ContentBodyComponent implements OnInit {
   }
 
   searchCharacter(text: any) {
-    console.log('entrou search com text: ', text);
     this.loadingCharacters
       .subscribe((value) => {
         if (!value) {
