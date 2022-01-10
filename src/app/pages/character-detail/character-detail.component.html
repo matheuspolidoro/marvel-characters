@@ -1,1 +1,39 @@
-<p>character-detail works!</p>
+<div class="wrapper">
+  <img [src]="imageSource" class="wrapCharImage" />
+  <aside>
+    <div class="wrapCards" *ngIf="character$ | async as character">
+      <div class="card">
+        <h1>
+          {{ character.name }}
+        </h1>
+      </div>
+      <p class="card" *ngIf="character.description.length">
+        {{ character.description }}
+      </p>
+      <ng-container *ngFor="let url of character.urls">
+        <a href="{{ url.url }}" target="_blank">
+          <div [ngSwitch]="url.type">
+            <div *ngSwitchCase="'detail'">
+              <div class="card">
+                <h3>Details</h3>
+                <p>
+                  You will find {{ character.series.available }} series,
+                  {{ character.stories.available }} stories and
+                  {{ character.events.available }} events
+                </p>
+              </div>
+            </div>
+            <div class="card" *ngSwitchCase="'wiki'">
+              <h3>Wiki</h3>
+              <p>Check the biography</p>
+            </div>
+            <div class="card" *ngSwitchCase="'comiclink'">
+              <h3>Comics</h3>
+              <p>{{ character.comics.available }} available</p>
+            </div>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </aside>
+</div>
