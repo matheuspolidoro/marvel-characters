@@ -23,7 +23,8 @@ This application intends to reproduce the pages proposed and designed by Objecti
 - only libs native to Angular
 - bespoke pagination system
 - bespoke typesearching debounce
-- grid system, flex system, media queries, perks of sass
+- [css] grid system, flex system, media queries, perks of sass
+- route and components animations
 - navigation with routes
 - rxjs manipulations
 - basic exceptions such as page not found
